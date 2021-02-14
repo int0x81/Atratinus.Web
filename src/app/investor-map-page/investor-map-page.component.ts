@@ -28,13 +28,13 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
     const data = this.createRandomData();
 
     const Globe = new ThreeGlobe({ animateIn: false })
-      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
-      .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-      .pathsData(data)
-      .pathColor(() => ['rgba(0,0,255,0.4)', 'rgba(255,0,0,0.4)'])
-      .pathDashLength(0.01)
-      .pathDashGap(0.004)
-      .pathDashAnimateTime(100000);
+      .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+      .arcsData(data)
+      .arcColor('color')
+      //.arcDashLength(0.4)
+      //.arcDashGap(4)
+      //.arcDashInitialGap(() => Math.random() * 5)
+      //.arcDashAnimateTime(1000);
 
     // Setup scene
     this.scene.add(Globe);
@@ -81,27 +81,18 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
     requestAnimationFrame(() => this.animate());
   }
 
-  createRandomData(): number[][][] {
-    const N_PATHS = 10;
-    const MAX_POINTS_PER_LINE = 10000;
-    const MAX_STEP_DEG = 1;
-    const MAX_STEP_ALT = 0.015;
-    const gData = [...Array(N_PATHS).keys()].map(() => {
-      let lat = (Math.random() - 0.5) * 90;
-      let lng = (Math.random() - 0.5) * 360;
-      let alt = 0;
+  createRandomData(): any[] {
+    const N = 20;
 
-      return [[lat, lng, alt], ...[...Array(Math.round(Math.random() * MAX_POINTS_PER_LINE)).keys()].map(() => {
-        lat += (Math.random() * 2 - 1) * MAX_STEP_DEG;
-        lng += (Math.random() * 2 - 1) * MAX_STEP_DEG;
-        alt += (Math.random() * 2 - 1) * MAX_STEP_ALT;
-        alt = Math.max(0, alt);
+    const arcsData = [...Array(N).keys()].map(() => ({
+      startLat: N % 2 == 0 ? 40.732 : 5,
+      startLng: (Math.random() - 0.5) * 360,
+      endLat: (Math.random() - 0.5) * 180,
+      endLng: (Math.random() - 0.5) * 360,
+      color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
+    }));
 
-        return [lat, lng, alt];
-      })];
-    });
-
-    return gData;
+    return arcsData;
   }
 
   ngOnDestroy(): void { }
