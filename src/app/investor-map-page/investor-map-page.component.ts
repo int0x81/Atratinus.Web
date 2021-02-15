@@ -30,11 +30,16 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
     const Globe = new ThreeGlobe({ animateIn: false })
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
       .arcsData(data)
+      .arcDashAnimateTime(1000)
       .arcColor('color')
-      //.arcDashLength(0.4)
-      //.arcDashGap(4)
-      //.arcDashInitialGap(() => Math.random() * 5)
-      //.arcDashAnimateTime(1000);
+      .arcStroke(1)
+      .labelsData(data)
+      .labelLat('startLat')
+      .labelLng('startLng')
+      .labelText('investorName')
+      .labelSize('labelSize')
+      .labelDotRadius((d: any) => 1)
+      .labelColor('color');
 
     // Setup scene
     this.scene.add(Globe);
@@ -84,13 +89,20 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
   createRandomData(): any[] {
     const N = 20;
 
-    const arcsData = [...Array(N).keys()].map(() => ({
-      startLat: N % 2 == 0 ? 40.732 : 5,
-      startLng: (Math.random() - 0.5) * 360,
-      endLat: (Math.random() - 0.5) * 180,
-      endLng: (Math.random() - 0.5) * 360,
-      color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
-    }));
+    const arcsData = [...Array(N).keys()].map(() => {
+      const rand = Math.random() * 100;
+      const mock = {
+        startLat: rand > 30 ? 40.732 : 25.194980291662706,
+        startLng: rand > 30 ? -73.99013151345478 : 51.41814117946225,
+        endLat: Math.random() * 20 + 36,
+        endLng: Math.random() * 22 - 4,
+        color: 'white',
+        labelSize: 1,
+        investorName: rand > 30 ? 'Melvin Capital' : 'Qatar Holding Unlimited',
+      }
+
+      return mock;
+    });
 
     return arcsData;
   }
