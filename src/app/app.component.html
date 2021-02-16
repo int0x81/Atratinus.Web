@@ -1,14 +1,17 @@
-<div style="display: flex; flex-direction: column; height: 100vh;">
-  <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-0 px-xl-3">
-      <h1>Activist Investors</h1>
+<div>
+  <div class="position-relative bg-dark bg-size-cover" style="background-image: url(img/demo/presentation/intro/bg.jpg);">
+    <app-header></app-header>
+    <div style="height: 90vh;">
+      <app-investor-map-page></app-investor-map-page>
     </div>
-  </header>
-  <div style="flex-grow: 1;">
-    <app-investor-map-page></app-investor-map-page>
+    <div class="position-absolute cs-shape cs-shape-bottom cs-shape-curve-side bg-body">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 250">
+        <path fill="currentColor" d="M3000,0v250H0v-51c572.7,34.3,1125.3,34.3,1657.8,0C2190.3,164.8,2637.7,98.4,3000,0z"></path>
+      </svg>
+    </div>
   </div>
-  <div style="background-color: #808080;">
-    <h1>This is a footer</h1>
+  <div>
+    <app-footer></app-footer>
   </div>
 </div>
 
