@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import * as THREE from 'three';
 import ThreeGlobe from 'three-globe';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -9,22 +10,35 @@ import { InvestmentActivityService } from '../investment-activity.service';
   templateUrl: './investor-map-page.component.html',
   styleUrls: ['./investor-map-page.component.sass']
 })
-export class InvestorMapPageComponent implements AfterViewInit {
+export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
 
+  globe: ThreeGlobe;
   globeContainer: HTMLElement;
   renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
   camera = new THREE.PerspectiveCamera();
-  scene = new THREE.Scene();
+  scene: THREE.Scene;
   controls: OrbitControls;
+
+  investmentActivitiesSubscription: Subscription;
 
   constructor(private investmentActivityService: InvestmentActivityService) { }
 
   ngAfterViewInit(): void {
 
-    this.globeContainer = document.getElementById('globeContainer');
-    const data = this.investmentActivityService.getInvestmentActivities('', '');
+    const initData = this.investmentActivityService.getInvestmentActivities();
 
-    const Globe = new ThreeGlobe({ animateIn: false })
+    this.renderGlobe(initData);
+
+    this.investmentActivitiesSubscription =
+    this.investmentActivityService.investmentActivitiesSubject.subscribe((ia) => {
+      this.renderGlobe(ia);
+    });
+  }
+
+  renderGlobe(data: any) {
+    this.globeContainer = document.getElementById('globeContainer');
+
+    this.globe = new ThreeGlobe({ animateIn: false })
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
       .arcsData(data)
       .arcDashAnimateTime(1000)
@@ -39,7 +53,8 @@ export class InvestorMapPageComponent implements AfterViewInit {
       .labelColor('color');
 
     // Setup scene
-    this.scene.add(Globe);
+    this.scene = new THREE.Scene();
+    this.scene.add(this.globe);
     this.scene.add(new THREE.AmbientLight(0xbbbbbb));
     this.scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
 
@@ -52,8 +67,8 @@ export class InvestorMapPageComponent implements AfterViewInit {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.minDistance = 260;
     this.controls.maxDistance = 500;
-    this.controls.rotateSpeed = 0.8;
-    this.controls.zoomSpeed = 1;
+    this.controls.rotateSpeed = 0.3;
+    this.controls.zoomSpeed = 0.3;
 
     window.addEventListener('resize', () => {
         this.adjustCanvas();
@@ -81,5 +96,9 @@ export class InvestorMapPageComponent implements AfterViewInit {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.animate());
+  }
+
+  ngOnDestroy() {
+    this.investmentActivitiesSubscription.unsubscribe();
   }
 }

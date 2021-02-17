@@ -1,4 +1,11 @@
-<div style="display: flex; flex-direction: column;">
-    <label style="color: white;">End Date</label>
-    <input type="time">
+<div class="form-group">
+  <label class="text-light">Date range</label>
+  <div class="input-group mt-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-secondary">
+        <i class="fe-calendar"></i>
+      </span>
+    </div>
+    <input id="{{dateRangeId}}" class="form-control cs-date-picker cs-date-range" type="text">
+  </div>
 </div>

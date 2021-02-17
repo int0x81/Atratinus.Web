@@ -29,7 +29,8 @@
               "src/img"
             ],
             "styles": [
-              "src/css/theme.css"
+              "src/css/theme.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css"
             ],
             "scripts": []
           },
@@ -94,7 +95,8 @@
               "src/img"
             ],
             "styles": [
-              "src/css/theme.css"
+              "src/css/theme.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css"
             ],
             "scripts": []
           }

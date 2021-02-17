@@ -1,15 +1,18 @@
 <footer>
-  <h2 class="text-center mt-3">Created by</h2>
-  <div class="d-flex justify-content-center">
-    <div class="m-5">
-      <app-persona></app-persona>
-    </div>
-    <div class="m-5">
-      <app-persona></app-persona>
-    </div>
+  <h2 class="text-center mt-4">Created by</h2>
+  <div class="persona-container">
+    <app-persona [name]="'Clea Roth'" [role]="'PhD Research Candidate'" [imgPath]="'img/testimonials/05.jpg'"></app-persona>
+    <app-persona [name]="'Finn Fiedler'" [role]="'Software Engineer'" [imgPath]="'img/testimonials/03.jpg'"></app-persona>
   </div>
-  <div class="d-flex justify-content-center">
-    <a>GitHub</a>
-    <a>PhD Examination</a>
+  <div class="mt-4">
+    <!-- <div class="d-flex flex-wrap align-items-center ml-3 mr-3">
+      <ul class="list-inline font-size-sm pt-2 mb-3">
+        <li class="list-inline-item"><a class="nav-link-style" href="#">About</a></li>
+        <li class="list-inline-item"><a class="nav-link-style" href="#">Support</a></li>
+      </ul>
+    </div> -->
+    <div class="d-flex justify-content-center">
+      <p class="font-size-ms mb-2"><span class="mr-1">© All rights reserved.</span></p>
+    </div>
   </div>
 </footer>

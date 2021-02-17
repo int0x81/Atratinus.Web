@@ -1,3 +1,4 @@
+import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./persona.component.sass']
 })
 export class PersonaComponent implements OnInit {
+
+  @Input() name: string;
+
+  @Input() imgPath: string;
+
+  @Input() role: string;
 
   constructor() { }
 

@@ -1,13 +1,28 @@
 import { Injectable } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvestmentActivityService {
 
+  public readonly investmentActivitiesSubject: Subject<any> = new Subject<any>();
+
+  startDate: Date;
+
+  endDate: Date;
+
   constructor() { }
 
-  public getInvestmentActivities(startDate: string, endDate: string) {
+  acceptNewDateRange(dateRange: Date[]): void {
+
+    this.startDate = dateRange[0];
+    this.endDate = dateRange[1];
+    const investments = this.getInvestmentActivities();
+    this.investmentActivitiesSubject.next(investments);
+  }
+
+  getInvestmentActivities() {
 
     const N = 20;
 
