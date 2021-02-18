@@ -1,0 +1,52 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title">Campaign Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div style="display: flex; justify-content: center; align-content: center; background-color: chartreuse; width: 100%; height: 100px;">
+      <p>CHART PLACEHOLDER</p>
+    </div>
+    <div class="campaign-info-container">
+      <div>
+        <div class="d-flex align-items-center mb-3">
+          <i class="fe-phone font-size-lg mr-2"></i>
+          <h3 class="h6 mb-0">Activist investor</h3>
+        </div>
+        <p style="margin: 28px;">Melvin Capital</p>
+      </div>
+      <div>
+        <div class="d-flex align-items-center mb-3">
+          <i class="fe-phone font-size-lg mr-2"></i>
+          <h3 class="h6 mb-0">Subject company</h3>
+        </div>
+        <p>Deutsche Global Invest</p>
+      </div>
+      <div>
+        <div class="d-flex align-items-center mb-3">
+          <i class="fe-phone font-size-lg mr-2"></i>
+          <h3 class="h6 mb-0">Start of campaign</h3>
+        </div>
+        <p>2020-01-01</p>
+      </div>
+      <div>
+        <div class="d-flex align-items-center mb-3">
+          <i class="fe-phone font-size-lg mr-2"></i>
+          <h3 class="h6 mb-0">End of campaign</h3>
+        </div>
+        <p>2021-02-06</p>
+      </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <div class="mb-2 mt-2 mr-2">
+        <img src="img/sec_logo.png" width="30px" alt="Logo of the Securities and Exchange Commission">
+      </div>
+      <a href="https://www.sec.gov/" target="_blank">View SEC file</a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+</div>

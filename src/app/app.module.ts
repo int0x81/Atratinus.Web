@@ -8,6 +8,8 @@ import { PersonaComponent } from './persona/persona.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CampaignDetailModalComponent } from './campaign-detail-modal/campaign-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,13 @@ import { FooterComponent } from './footer/footer.component';
     PersonaComponent,
     DatePickerComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CampaignDetailModalComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

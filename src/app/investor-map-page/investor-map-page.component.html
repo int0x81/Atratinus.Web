@@ -1,6 +1,11 @@
 <div class="d-flex w-100 h-100 investment-activities-page">
     <div class="filter-menu">
+      <div>
         <app-date-picker [dateRangeId]="'dateRange'"></app-date-picker>
+      </div>
+      <div>
+        <button class="btn btn-lg btn-outline-success" (click)="openCampaignDetailModel()">Campaign details</button>
+      </div>
     </div>
     <div id="globeContainer">
     </div>

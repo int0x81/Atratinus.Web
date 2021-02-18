@@ -29,6 +29,7 @@
               "src/img"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/css/theme.css",
               "node_modules/flatpickr/dist/flatpickr.min.css"
             ],

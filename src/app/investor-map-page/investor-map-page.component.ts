@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import * as THREE from 'three';
 import ThreeGlobe from 'three-globe';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { CampaignDetailModalComponent } from '../campaign-detail-modal/campaign-detail-modal.component';
 import { InvestmentActivityService } from '../investment-activity.service';
 
 @Component({
@@ -21,7 +23,7 @@ export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
 
   investmentActivitiesSubscription: Subscription;
 
-  constructor(private investmentActivityService: InvestmentActivityService) { }
+  constructor(private modalService: NgbModal, private investmentActivityService: InvestmentActivityService) { }
 
   ngAfterViewInit(): void {
 
@@ -96,6 +98,11 @@ export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.animate());
+  }
+
+  openCampaignDetailModel() {
+    const modalRef = this.modalService.open(CampaignDetailModalComponent, { windowClass: 'blabla', size: 'xl' });
+    modalRef.componentInstance.name = 'World';
   }
 
   ngOnDestroy() {
