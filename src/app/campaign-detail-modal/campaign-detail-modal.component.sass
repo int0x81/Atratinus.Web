@@ -1,7 +1,23 @@
 .campaign-info-container
-  display: flex
-  justify-content: space-between
-  flex-wrap: wrap
+  margin-top: 40px
+  margin-bottom: 40px
+  display: grid
+  grid-template-columns: auto auto auto auto
+  grid-template-rows: auto
+  column-gap: 80px
+  row-gap: 40px
+
+@media only screen and (max-width: 1279px)
+  .campaign-info-container
+    grid-template-columns: auto auto
+    grid-template-rows: auto auto
+
+@media only screen and (max-width: 575px)
+  .campaign-info-container
+    grid-template-columns: auto
+    grid-template-rows: auto auto auto auto
+
+.campaign-info-item
 
   > div
     margin: 40px
