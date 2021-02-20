@@ -6,63 +6,75 @@ import ThreeGlobe from 'three-globe';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CampaignDetailModalComponent } from '../campaign-detail-modal/campaign-detail-modal.component';
 import { InvestmentActivityService } from '../investment-activity.service';
+import { InvestmentCampaign } from '../models/investmentCampaign';
 
 @Component({
   selector: 'app-investor-map-page',
   templateUrl: './investor-map-page.component.html',
   styleUrls: ['./investor-map-page.component.sass']
 })
-export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
+export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   globe: ThreeGlobe;
   globeContainer: HTMLElement;
   renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-  camera = new THREE.PerspectiveCamera();
+  camera: THREE.PerspectiveCamera;
   scene: THREE.Scene;
   controls: OrbitControls;
+  loadedCampaigns: Map<string, InvestmentCampaign>;
 
   investmentActivitiesSubscription: Subscription;
 
   constructor(private modalService: NgbModal, private investmentActivityService: InvestmentActivityService) { }
 
+  ngOnInit() { }
   ngAfterViewInit(): void {
 
-    const initData = this.investmentActivityService.getInvestmentActivities();
+    this.loadedCampaigns = this.investmentActivityService.getInvestmentActivities();
+    const campaignArray = Array.from(this.loadedCampaigns, ([, value]) => value);
 
-    this.renderGlobe(initData);
+    this.renderGlobe(campaignArray);
 
     this.investmentActivitiesSubscription =
-    this.investmentActivityService.investmentActivitiesSubject.subscribe((ia) => {
-      this.renderGlobe(ia);
+    this.investmentActivityService.investmentActivitiesSubject.subscribe((newCampaigns) => {
+      this.loadedCampaigns = newCampaigns;
+      this.renderGlobe(campaignArray);
+    });
+
+    window.addEventListener('resize', () => {
+      this.adjustCanvas();
     });
   }
 
-  renderGlobe(data: any) {
+  renderGlobe(data: InvestmentCampaign[]) {
     this.globeContainer = document.getElementById('globeContainer');
 
-    this.globe = new ThreeGlobe({ animateIn: false })
+    this.globe = new ThreeGlobe({ animateIn: true })
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
       .arcsData(data)
       .arcDashAnimateTime(1000)
-      .arcColor('color')
+      .arcStartLng('investorLng')
+      .arcStartLat('investorLat')
+      .arcEndLng('subjectCompanyLng')
+      .arcEndLat('subjectCompanyLat')
+      .arcColor(() => 'white')
       .arcStroke(1)
       .labelsData(data)
-      .labelLat('startLat')
-      .labelLng('startLng')
+      .labelLat('investorLat')
+      .labelLng('investorLng')
       .labelText('investorName')
-      .labelSize('labelSize')
-      .labelDotRadius((d: any) => 1)
-      .labelColor('color');
+      .labelSize(() => 1)
+      .labelDotRadius((d: any) => 0.7)
+      .labelColor(() => 'white');
 
     // Setup scene
     this.scene = new THREE.Scene();
     this.scene.add(this.globe);
-    this.scene.add(new THREE.AmbientLight(0xbbbbbb));
+    this.scene.add(new THREE.AmbientLight(0xeeeeee));
     this.scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
 
-    this.adjustCanvas();
-
     // Setup camera
+    this.camera = new THREE.PerspectiveCamera();
     this.camera.position.z = 300;
 
     // Add camera controls
@@ -72,10 +84,7 @@ export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
     this.controls.rotateSpeed = 0.3;
     this.controls.zoomSpeed = 0.3;
 
-    window.addEventListener('resize', () => {
-        this.adjustCanvas();
-    });
-
+    this.adjustCanvas();
     this.animate();
   }
 
@@ -95,14 +104,15 @@ export class InvestorMapPageComponent implements AfterViewInit, OnDestroy {
   }
 
   animate() {
-    this.controls.update();
+    //this.controls.update();
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(() => this.animate());
   }
 
-  openCampaignDetailModel() {
-    const modalRef = this.modalService.open(CampaignDetailModalComponent, { windowClass: 'blabla', size: 'xl' });
-    modalRef.componentInstance.name = 'World';
+  openCampaignDetailModel(campaignId: string) {
+    const campaign = this.loadedCampaigns.get(campaignId);
+    const modalRef = this.modalService.open(CampaignDetailModalComponent, { size: 'xl' });
+    modalRef.componentInstance.investmentCampaign = campaign;
   }
 
   ngOnDestroy() {
