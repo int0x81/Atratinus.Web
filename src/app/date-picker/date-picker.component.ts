@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import flatpickr from 'flatpickr';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
 import { InvestmentActivityService } from '../investment-activity.service';
@@ -22,7 +22,7 @@ export class DatePickerComponent implements AfterViewInit {
       dateFormat: "Y-m-d",
       minDate: new Date(1998, 1, 17), // 1 == february; new SEC reform in place
       maxDate: Date.now(),
-      defaultDate: new Date(2020, 3, 17),
+      defaultDate: new Date(2020, 10, 17),
       plugins: [
         rangePlugin()
       ],

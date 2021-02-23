@@ -15,20 +15,29 @@ export class StockDataService {
     const index = new Date(startOfCampaign); 
     index.setMonth(startOfCampaign.getMonth() - 1);
 
-    let end: Date;
+    
+    const oneMonthAhead = new Date(endOfCampaign);
+    oneMonthAhead.setMonth(oneMonthAhead.getMonth() + 1);
+    
+    let endOfStockDataInterval: Date;
 
     if(endOfCampaign === null)
-      end = new Date();
-    else {
-      end = new Date(endOfCampaign);
-      if(end <= new Date(endOfCampaign.getMonth() + 1))
-        end.setMonth(endOfCampaign.getMonth() + 1);
-    }
+      endOfStockDataInterval = new Date();
+    else
+      endOfStockDataInterval = new Date(endOfCampaign);
+
+    console.log(`Is ${oneMonthAhead} smaller then ${new Date()}`);
+    if(oneMonthAhead <= new Date()) 
+      endOfStockDataInterval.setMonth(endOfCampaign.getMonth() + 1);
+
     let lastValue: number = 40;
     const lowerBound = 20;
-    while (index <= end) {
+    while (index <= endOfStockDataInterval) {
 
-      const direction = Math.random() > 0.55 && lastValue > lowerBound ? -1 : 1;
+      let isWithinCampaign: boolean = index < startOfCampaign || index > endOfCampaign;
+      let weight = isWithinCampaign ? 0.4 : 0.55;
+
+      const direction = Math.random() > weight && lastValue > lowerBound ? -1 : 1;
 
       results.push({
         time: index.toISOString().substring(0, 10),

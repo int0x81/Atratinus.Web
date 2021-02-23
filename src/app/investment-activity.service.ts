@@ -113,11 +113,12 @@ export class InvestmentActivityService {
 
       const investor = this.getRandomInvestor();
       const subject = this.getRandomSubjectCompany();
-
+      const endOfCampaign = new Date(this.endDate);
+      endOfCampaign.setMonth(this.endDate.getMonth() - 1);
       const mock: InvestmentCampaign = {
         id: c.toString(),
         startOfCampaign: this.startDate,
-        endOfCampaign: this.endDate,
+        endOfCampaign: endOfCampaign,
         investorLat: investor.lat,
         investorLng: investor.long,
         subjectCompanyName: subject.name,

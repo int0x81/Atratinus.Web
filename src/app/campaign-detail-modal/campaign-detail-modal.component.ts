@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CountUp } from 'countup.js';
 import { AreaStyleOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time, WhitespaceData } from 'lightweight-charts';
 import { InvestmentCampaign } from '../models/investmentCampaign';
 import { StockDataService } from '../stock-data.service';
@@ -117,6 +118,15 @@ export class CampaignDetailModalComponent implements AfterViewInit {
       chart.resize(this.currentChartWidth, this.currentChartHeight);
       chart.timeScale().resetTimeScale();
     });
+
+    const countUpOptions = {
+        decimalPlaces: 2,
+        duration: 1,
+        suffix: '%',
+      };
+    const stockCounter = document.getElementById('stock-price-counter');
+    const animation = new CountUp(stockCounter, 20.56, countUpOptions);
+    animation.start();
   }
 
   private setChartSizes() {
