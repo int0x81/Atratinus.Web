@@ -1,4 +1,5 @@
 import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AreaStyleOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time, WhitespaceData } from 'lightweight-charts';
 import { InvestmentCampaign } from '../models/investmentCampaign';
@@ -19,21 +20,28 @@ const chartHeightSM = 100;
   templateUrl: './campaign-detail-modal.component.html',
   styleUrls: ['./campaign-detail-modal.component.sass']
 })
-export class CampaignDetailModalComponent implements AfterContentChecked {
+export class CampaignDetailModalComponent {
 
   private currentChartWidth: number;
   private currentChartHeight: number;
+  // private _investmentCampaign: InvestmentCampaign;
 
-  @Input() investmentCampaign: InvestmentCampaign;
+  // @Input() 
+  // get investmentCampaign(): InvestmentCampaign { return this._investmentCampaign }
+  // set investmentCampaign(investmentCampaign: InvestmentCampaign) {
+  //   this._investmentCampaign = investmentCampaign;
+  //   this.displayCampaign();
+  //}
+  investmentCampaign: InvestmentCampaign;
   stockPriceGain: number;
 
   contentRendered: boolean = false;
 
   constructor(private stockDataService: StockDataService, public activeModal: NgbActiveModal) { }
 
-  ngAfterContentChecked() {
+  setInvestmentCampaign(campaign: InvestmentCampaign) {
 
-    console.dir(this.investmentCampaign)
+    this.investmentCampaign = campaign;
     
     const stockData = this.stockDataService.getStockData(this.investmentCampaign.subjectCompanyISIN, 
       this.investmentCampaign.startOfCampaign, this.investmentCampaign.endOfCampaign);
@@ -126,10 +134,6 @@ export class CampaignDetailModalComponent implements AfterContentChecked {
       chart.resize(this.currentChartWidth, this.currentChartHeight);
       chart.timeScale().resetTimeScale();
     });
-  }
-
-  ngAfterViewInit(): void {
-
   }
 
   private setChartSizes() {
