@@ -112,7 +112,8 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
   openCampaignDetailModel(campaignId: string) {
     const campaign = this.loadedCampaigns.get(campaignId);
     const modalRef = this.modalService.open(CampaignDetailModalComponent, { size: 'xl' });
-    modalRef.componentInstance.investmentCampaign = campaign;
+    setTimeout(() => {modalRef.componentInstance.investmentCampaign = campaign}, 50)
+    // modalRef.componentInstance.investmentCampaign = campaign;
   }
 
   ngOnDestroy() {

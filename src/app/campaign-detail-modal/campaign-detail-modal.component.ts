@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CountUp } from 'countup.js';
 import { AreaStyleOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time, WhitespaceData } from 'lightweight-charts';
 import { InvestmentCampaign } from '../models/investmentCampaign';
 import { StockDataService } from '../stock-data.service';
@@ -20,19 +19,27 @@ const chartHeightSM = 100;
   templateUrl: './campaign-detail-modal.component.html',
   styleUrls: ['./campaign-detail-modal.component.sass']
 })
-export class CampaignDetailModalComponent implements AfterViewInit {
+export class CampaignDetailModalComponent implements AfterContentChecked {
 
-  @Input() investmentCampaign: InvestmentCampaign;
   private currentChartWidth: number;
   private currentChartHeight: number;
 
-  constructor(public activeModal: NgbActiveModal, private stockDataService: StockDataService) { }
+  @Input() investmentCampaign: InvestmentCampaign;
+  stockPriceGain: number;
 
-  ngAfterViewInit(): void {
+  contentRendered: boolean = false;
 
+  constructor(private stockDataService: StockDataService, public activeModal: NgbActiveModal) { }
+
+  ngAfterContentChecked() {
+
+    console.dir(this.investmentCampaign)
+    
     const stockData = this.stockDataService.getStockData(this.investmentCampaign.subjectCompanyISIN, 
       this.investmentCampaign.startOfCampaign, this.investmentCampaign.endOfCampaign);
-      
+
+    this.stockPriceGain = (stockData[stockData.length - 1].value / stockData[0].value - 1) * 100;
+
     const areaOptions = this.determineAreaOptions(stockData);
 
     const chartElement = document.getElementById('campaignDevelopmentChart');
@@ -111,6 +118,7 @@ export class CampaignDetailModalComponent implements AfterViewInit {
       to: stockData[stockData.length - 1].time
     });
     
+    this.contentRendered = true;
 
     window.addEventListener('resize', () => {
       
@@ -118,15 +126,10 @@ export class CampaignDetailModalComponent implements AfterViewInit {
       chart.resize(this.currentChartWidth, this.currentChartHeight);
       chart.timeScale().resetTimeScale();
     });
+  }
 
-    const countUpOptions = {
-        decimalPlaces: 2,
-        duration: 1,
-        suffix: '%',
-      };
-    const stockCounter = document.getElementById('stock-price-counter');
-    const animation = new CountUp(stockCounter, 20.56, countUpOptions);
-    animation.start();
+  ngAfterViewInit(): void {
+
   }
 
   private setChartSizes() {

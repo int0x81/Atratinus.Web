@@ -5,11 +5,11 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body p-5">
+  <div *ngIf="contentRendered" class="modal-body p-5">
     <div class="campaign-keyfact-container">
       <div id="campaignDevelopmentChart"></div>
       <div class="stock-price-counter-container">
-        <p id="stock-price-counter" class="display-4">0</p>
+        <app-stock-price-counter value="{{stockPriceGain}}"></app-stock-price-counter>
       </div>
     </div>
     <div class="campaign-info-container">
@@ -32,14 +32,14 @@
           <i class="fe-calendar font-size-lg mr-2"></i>
           <h3 class="h6 mb-0">Start of campaign</h3>
         </div>
-        <p>{{investmentCampaign.startOfCampaign.toISOString().substring(0, 10)}}</p>
+        <p>{{investmentCampaign.startOfCampaign.toLocaleDateString()}}</p>
       </div>
       <div>
         <div class="d-flex align-items-center mb-3">
           <i class="fe-calendar font-size-lg mr-2"></i>
           <h3 class="h6 mb-0">End of campaign</h3>
         </div>
-        <p>{{investmentCampaign.endOfCampaign.toISOString().substring(0, 10)}}</p>
+        <p>{{investmentCampaign.endOfCampaign.toLocaleDateString()}}</p>
       </div>
     </div>
     <div class="d-flex align-items-center">

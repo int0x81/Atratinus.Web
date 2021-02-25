@@ -6,6 +6,7 @@
 
 .campaign-keyfact-container
   display: flex
+  align-content: center
   margin-bottom: 60px
 
 .stock-price-counter-container
@@ -27,6 +28,12 @@
   .campaign-info-container
     grid-template-columns: auto auto
     grid-template-rows: auto auto
+
+  .campaign-keyfact-container
+    flex-direction: column
+    
+  .stock-price-counter-container
+    margin-top: 20px
 
 @media only screen and (max-width: 575px)
   .campaign-info-container

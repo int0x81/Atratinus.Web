@@ -10,6 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CampaignDetailModalComponent } from './campaign-detail-modal/campaign-detail-modal.component';
+import { StockPriceCounterComponent } from './stock-price-counter/stock-price-counter.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CampaignDetailModalComponent } from './campaign-detail-modal/campaign-d
     DatePickerComponent,
     HeaderComponent,
     FooterComponent,
-    CampaignDetailModalComponent
+    CampaignDetailModalComponent,
+    StockPriceCounterComponent
   ],
   imports: [
     BrowserModule,
