@@ -1,7 +1,6 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AreaStyleOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time, WhitespaceData } from 'lightweight-charts';
+import { AreaStyleOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time } from 'lightweight-charts';
 import { InvestmentCampaign } from '../models/investmentCampaign';
 import { StockDataService } from '../stock-data.service';
 
@@ -24,26 +23,16 @@ export class CampaignDetailModalComponent {
 
   private currentChartWidth: number;
   private currentChartHeight: number;
-  // private _investmentCampaign: InvestmentCampaign;
-
-  // @Input() 
-  // get investmentCampaign(): InvestmentCampaign { return this._investmentCampaign }
-  // set investmentCampaign(investmentCampaign: InvestmentCampaign) {
-  //   this._investmentCampaign = investmentCampaign;
-  //   this.displayCampaign();
-  //}
   investmentCampaign: InvestmentCampaign;
   stockPriceGain: number;
-
-  contentRendered: boolean = false;
 
   constructor(private stockDataService: StockDataService, public activeModal: NgbActiveModal) { }
 
   setInvestmentCampaign(campaign: InvestmentCampaign) {
 
     this.investmentCampaign = campaign;
-    
-    const stockData = this.stockDataService.getStockData(this.investmentCampaign.subjectCompanyISIN, 
+
+    const stockData = this.stockDataService.getStockData(this.investmentCampaign.subjectCompanyISIN,
       this.investmentCampaign.startOfCampaign, this.investmentCampaign.endOfCampaign);
 
     this.stockPriceGain = (stockData[stockData.length - 1].value / stockData[0].value - 1) * 100;
@@ -52,8 +41,8 @@ export class CampaignDetailModalComponent {
 
     const chartElement = document.getElementById('campaignDevelopmentChart');
     this.setChartSizes();
-    const chart = createChart(chartElement, { 
-      width: this.currentChartWidth, 
+    const chart = createChart(chartElement, {
+      width: this.currentChartWidth,
       height: this.currentChartHeight,
       localization: {
         locale: 'en-US',
@@ -95,41 +84,39 @@ export class CampaignDetailModalComponent {
     const areaSeries = chart.addAreaSeries(areaOptions);
     areaSeries.setData(stockData);
     const markers: SeriesMarker<Time>[] = [
-      { 
+      {
         time: {
           year: this.investmentCampaign.startOfCampaign.getFullYear(),
           month: this.investmentCampaign.startOfCampaign.getMonth() + 1,
           day: this.investmentCampaign.startOfCampaign.getDate()
         },
-        position: 'belowBar', 
-        color: '#000000', 
-        shape: 'arrowUp', 
-        text: 'Start of Campaign' 
+        position: 'belowBar',
+        color: '#000000',
+        shape: 'arrowUp',
+        text: 'Start of Campaign'
       },
-      { 
+      {
         time: {
           year: this.investmentCampaign.endOfCampaign.getFullYear(),
           month: this.investmentCampaign.endOfCampaign.getMonth() + 1,
           day: this.investmentCampaign.endOfCampaign.getDate()
         },
-        position: 'belowBar', 
-        color: '#000000', 
-        shape: 'arrowUp', 
+        position: 'belowBar',
+        color: '#000000',
+        shape: 'arrowUp',
         text: 'End of Campaign'
       }
     ];
 
     areaSeries.setMarkers(markers);
-    
-    chart.timeScale().setVisibleRange({ 
+
+    chart.timeScale().setVisibleRange({
       from: stockData[0].time,
       to: stockData[stockData.length - 1].time
     });
-    
-    this.contentRendered = true;
 
     window.addEventListener('resize', () => {
-      
+
       this.setChartSizes();
       chart.resize(this.currentChartWidth, this.currentChartHeight);
       chart.timeScale().resetTimeScale();
@@ -168,6 +155,6 @@ export class CampaignDetailModalComponent {
       bottomColor: `rgba(${color}, 0.04)`,
       lineColor: `rgba(${color}, 1)`,
       lineWidth: 3,
-    } 
+    }
   }
 }
