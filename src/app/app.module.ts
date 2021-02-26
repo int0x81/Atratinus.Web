@@ -11,6 +11,8 @@ import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CampaignDetailModalComponent } from './campaign-detail-modal/campaign-detail-modal.component';
 import { StockPriceCounterComponent } from './stock-price-counter/stock-price-counter.component';
+import { CampaignModalInfoComponent } from './campaign-modal-info/campaign-modal-info.component';
+import { StockChartComponent } from './stock-chart/stock-chart.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { StockPriceCounterComponent } from './stock-price-counter/stock-price-co
     HeaderComponent,
     FooterComponent,
     CampaignDetailModalComponent,
-    StockPriceCounterComponent
+    StockPriceCounterComponent,
+    CampaignModalInfoComponent,
+    StockChartComponent
   ],
   imports: [
     BrowserModule,

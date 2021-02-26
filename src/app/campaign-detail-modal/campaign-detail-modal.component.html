@@ -7,40 +7,18 @@
   </div>
   <div class="modal-body p-5">
     <div class="campaign-keyfact-container">
-      <div id="campaignDevelopmentChart"></div>
+      <div *ngIf="investmentCampaign !== undefined && stockData !== undefined">
+        <app-stock-chart [investmentCampaign]=investmentCampaign [stockData]=stockData ></app-stock-chart>
+      </div>
       <div class="stock-price-counter-container">
         <app-stock-price-counter value="{{stockPriceGain}}"></app-stock-price-counter>
       </div>
     </div>
     <div class="campaign-info-container">
-      <div>
-        <div class="d-flex align-items-center mb-3">
-          <i class="fe-home font-size-lg mr-2"></i>
-          <h3 class="h6 mb-0">Activist investor</h3>
-        </div>
-        <p>{{investmentCampaign.investorName}}</p>
-      </div>
-      <div>
-        <div class="d-flex align-items-center mb-3">
-          <i class="fe-home font-size-lg mr-2"></i>
-          <h3 class="h6 mb-0">Subject company</h3>
-        </div>
-        <p>{{investmentCampaign.subjectCompanyName}}</p>
-      </div>
-      <div>
-        <div class="d-flex align-items-center mb-3">
-          <i class="fe-calendar font-size-lg mr-2"></i>
-          <h3 class="h6 mb-0">Start of campaign</h3>
-        </div>
-        <p>{{investmentCampaign.startOfCampaign.toLocaleDateString()}}</p>
-      </div>
-      <div>
-        <div class="d-flex align-items-center mb-3">
-          <i class="fe-calendar font-size-lg mr-2"></i>
-          <h3 class="h6 mb-0">End of campaign</h3>
-        </div>
-        <p>{{investmentCampaign.endOfCampaign.toLocaleDateString()}}</p>
-      </div>
+      <app-campaign-modal-info name="Activist investor" value="{{investmentCampaign.investorName}}"></app-campaign-modal-info>
+      <app-campaign-modal-info name="Subject company" value="{{investmentCampaign.subjectCompanyName}}"></app-campaign-modal-info>
+      <app-campaign-modal-info name="Start of campaign" value="{{investmentCampaign.startOfCampaign.toLocaleDateString()}}"></app-campaign-modal-info>
+      <app-campaign-modal-info name="End of campaign" value="{{investmentCampaign.endOfCampaign.toLocaleDateString()}}"></app-campaign-modal-info>
     </div>
     <div class="d-flex align-items-center">
       <div class="mb-2 mt-2 mr-2">
