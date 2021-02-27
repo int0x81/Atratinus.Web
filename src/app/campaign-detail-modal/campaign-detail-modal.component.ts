@@ -15,7 +15,7 @@ export class CampaignDetailModalComponent {
   investmentCampaign: InvestmentCampaign;
 
   stockData: LineData[];
-  stockPriceGain: number;
+  campaignStockPriceGain: number;
 
   constructor(private stockDataService: StockDataService, public activeModal: NgbActiveModal) { }
 
@@ -26,6 +26,26 @@ export class CampaignDetailModalComponent {
     this.stockData = this.stockDataService.getStockData(this.investmentCampaign.subjectCompanyISIN,
       this.investmentCampaign.startOfCampaign, this.investmentCampaign.endOfCampaign);
 
-    this.stockPriceGain = (this.stockData[this.stockData.length - 1].value / this.stockData[0].value - 1) * 100;
+    const campaignPrices = this.getOpenAndClosingPrices()
+
+    this.campaignStockPriceGain = (campaignPrices.end / campaignPrices.start - 1) * 100;
+  }
+
+  getOpenAndClosingPrices(): any {
+
+    let start: number;
+    let end: number;
+
+    for(let datum of this.stockData) {
+
+      if(datum.time.toLocaleString().localeCompare(this.investmentCampaign.startOfCampaign.toISOString().substring(0, 10)) === 0) {
+        start = datum.value
+      }
+      else if(datum.time.toLocaleString().localeCompare(this.investmentCampaign.endOfCampaign.toISOString().substring(0, 10)) === 0) {
+        end = datum.value
+      }
+    }
+
+    return { start: start, end: end }
   }
 }

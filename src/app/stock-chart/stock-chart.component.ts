@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InvestmentCampaign } from '../models/investmentCampaign';
-import { AreaStyleOptions, ChartOptions, createChart, DeepPartial, LineData, SeriesMarker, SeriesOptions, Time } from 'lightweight-charts';
+import { AreaStyleOptions, ChartOptions, createChart, DeepPartial, IChartApi, LineData, SeriesMarker, SeriesOptions, Time } from 'lightweight-charts';
 
 const modalBreakpointXL = 1279;
 const modalBreakpointM = 500;
@@ -12,6 +12,8 @@ const chartHeightM = 200;
 const chartWidthSM = 200;
 const chartHeightSM = 100;
 
+const prePostColor = '180, 180, 180'
+
 @Component({
   selector: 'app-stock-chart',
   templateUrl: './stock-chart.component.html',
@@ -21,6 +23,7 @@ export class StockChartComponent implements OnInit {
 
   private currentChartWidth: number;
   private currentChartHeight: number;
+  private chart: IChartApi;
   @Input() stockData: LineData[];
   @Input() investmentCampaign: InvestmentCampaign;
 
@@ -28,23 +31,24 @@ export class StockChartComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const areaOptions = this.determineAreaOptions(this.stockData);
-
     const chartElement = document.getElementById('campaignDevelopmentChart');
 
     this.setChartSizes();
 
-    const chart = createChart(chartElement, this.getChartOptions());
+    this.chart = createChart(chartElement, this.getChartOptions());
 
-    const areaSeries = chart.addAreaSeries(areaOptions);
+    const dataSeries: LineData[][] = this.splitStockData();
 
-    areaSeries.setData(this.stockData);
+    //preArea
+    this.addPreArea(dataSeries[0]);
 
-    const markers = this.getMarkers();
+    //campaignArea
+    this.addCampaignArea(dataSeries[1]);
+    
+    //postArea
+    this.addPostArea(dataSeries[2]);
 
-    areaSeries.setMarkers(markers);
-
-    chart.timeScale().setVisibleRange({
+    this.chart.timeScale().setVisibleRange({
       from: this.stockData[0].time,
       to: this.stockData[this.stockData.length - 1].time
     });
@@ -52,44 +56,35 @@ export class StockChartComponent implements OnInit {
     window.addEventListener('resize', () => {
 
       this.setChartSizes();
-      chart.resize(this.currentChartWidth, this.currentChartHeight, true);
-      chart.timeScale().resetTimeScale();
+      this.chart.resize(this.currentChartWidth, this.currentChartHeight, true);
+      this.chart.timeScale().resetTimeScale();
     });
   }
 
-  private setChartSizes() {
+  private splitStockData(): LineData[][] {
 
-    if(window.innerWidth > modalBreakpointXL) {
-      this.currentChartWidth = chartWidthXL;
-      this.currentChartHeight = chartHeightXL;
-      return;
+    const pre = new Array<LineData>()
+    const campaign = new Array<LineData>()
+    const post = new Array<LineData>()
+
+    for(let datum of this.stockData) {
+
+      if(datum.time.toLocaleString().localeCompare(this.investmentCampaign.startOfCampaign.toISOString().substring(0, 10)) === -1) {
+        pre.push(datum)
+      }
+      else if(datum.time.toLocaleString().localeCompare(this.investmentCampaign.endOfCampaign.toISOString().substring(0, 10)) === 1) {
+        post.push(datum)
+      }
+      else {
+        campaign.push(datum)
+      }
     }
-    else if(window.innerWidth <= modalBreakpointXL && window.innerWidth > modalBreakpointM) {
-      this.currentChartWidth = chartWidthM;
-      this.currentChartHeight = chartHeightM;
-      return;
-    } else {
-      this.currentChartWidth = chartWidthSM;
-      this.currentChartHeight = chartHeightSM;
-    }
-  }
 
-  private determineAreaOptions(stockData: LineData[]): DeepPartial<SeriesOptions<AreaStyleOptions>> {
-
-    let color: string;
-    if(stockData[0].value < stockData[stockData.length -1].value)
-      color = '32, 226, 47';  //Green
-    else if (stockData[0].value > stockData[stockData.length -1].value)
-      color = '255, 0, 0';    //Red
-    else
-      color = '33, 150, 243'; //Blue
-
-    return {
-      topColor: `rgba(${color}, 0.56)`,
-      bottomColor: `rgba(${color}, 0.04)`,
-      lineColor: `rgba(${color}, 1)`,
-      lineWidth: 3,
-    }
+    return [
+      pre,
+      campaign,
+      post
+    ]
   }
 
   private getChartOptions(): DeepPartial<ChartOptions> {
@@ -131,6 +126,82 @@ export class StockChartComponent implements OnInit {
             visible: false,
         },
       },
+    }
+  }
+
+  private setChartSizes() {
+
+    if(window.innerWidth > modalBreakpointXL) {
+      this.currentChartWidth = chartWidthXL;
+      this.currentChartHeight = chartHeightXL;
+      return;
+    }
+    else if(window.innerWidth <= modalBreakpointXL && window.innerWidth > modalBreakpointM) {
+      this.currentChartWidth = chartWidthM;
+      this.currentChartHeight = chartHeightM;
+      return;
+    } else {
+      this.currentChartWidth = chartWidthSM;
+      this.currentChartHeight = chartHeightSM;
+    }
+  }
+
+  private addPreArea(data: LineData[]) {
+
+    if(data.length === 0)
+      return;
+
+    const areaOptions = this.buildAreaOptions(prePostColor, false)
+
+    const areaSeries = this.chart.addAreaSeries(areaOptions)
+  
+    areaSeries.setData(data)
+  }
+
+  private addCampaignArea(data: LineData[]) {
+
+    if(data.length === 0)
+      return;
+
+    let color: string
+    if(data[0].value < data[data.length -1].value)
+      color = '32, 226, 47'  //Green
+    else if (data[0].value > data[data.length -1].value)
+      color = '255, 0, 0'   //Red
+    else
+      color = '33, 150, 243' //Blue
+
+    const areaOptions = this.buildAreaOptions(color, true)
+
+    const areaSeries = this.chart.addAreaSeries(areaOptions)
+
+    areaSeries.setData(data)
+
+    const markers = this.getMarkers()
+
+    areaSeries.setMarkers(markers)
+  }
+
+  private addPostArea(data: LineData[]) {
+
+    if(data.length === 0)
+      return;
+
+    const areaOptions = this.buildAreaOptions(prePostColor, false)
+
+    const areaSeries = this.chart.addAreaSeries(areaOptions)
+  
+    areaSeries.setData(data)
+  }
+
+  private buildAreaOptions(color: string, valuesVisible: boolean): DeepPartial<SeriesOptions<AreaStyleOptions>> {
+
+    return {
+      topColor: `rgba(${color}, 0.56)`,
+      bottomColor: `rgba(${color}, 0.04)`,
+      lineColor: `rgba(${color}, 1)`,
+      lineWidth: 3,
+      lastValueVisible: valuesVisible
     }
   }
 
