@@ -27,9 +27,6 @@ export class StockChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.dir(this.investmentCampaign);
-    
-console.dir(this.stockData);
 
     const areaOptions = this.determineAreaOptions(this.stockData);
 
@@ -55,7 +52,7 @@ console.dir(this.stockData);
     window.addEventListener('resize', () => {
 
       this.setChartSizes();
-      chart.resize(this.currentChartWidth, this.currentChartHeight);
+      chart.resize(this.currentChartWidth, this.currentChartHeight, true);
       chart.timeScale().resetTimeScale();
     });
   }
@@ -115,7 +112,7 @@ console.dir(this.stockData);
       },
       handleScroll: {
         mouseWheel: false,
-        pressedMouseMove: false,
+        pressedMouseMove: true,
       },
       handleScale: {
         axisPressedMouseMove: false,
