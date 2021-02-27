@@ -1,11 +1,21 @@
 <div class="d-flex w-100 h-100 investment-activities-page">
     <div class="filter-menu">
-      <div>
-        <app-date-picker [dateRangeId]="'dateRange'"></app-date-picker>
-      </div>
-      <div>
+      <!-- <app-filter-option label="Between">
+        <app-date-picker datePickerId=startRange [start]="true"></app-date-picker>
+      </app-filter-option>
+      <app-filter-option label="And">
+        <app-date-picker datePickerId=endRange [start]="false"></app-date-picker>
+      </app-filter-option> -->
+      <app-filter-option label="Date range">
+        <app-daterange-picker dateRangeId=dateRange></app-daterange-picker>
+      </app-filter-option>
+      <!-- <app-filter-option label="Investor">
+        <app-autocomplete></app-autocomplete>
+      </app-filter-option> -->
+      <app-filter-option label="">
         <button class="btn btn-lg btn-outline-success" (click)="openCampaignDetailModel('1')">Campaign details</button>
-      </div>
+      </app-filter-option>
+      
     </div>
     <div id="globeContainer">
     </div>

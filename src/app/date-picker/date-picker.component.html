@@ -1,11 +1,11 @@
-<div class="form-group">
-  <label class="text-light">Date range</label>
-  <div class="input-group mt-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text bg-secondary">
-        <i class="fe-calendar"></i>
-      </span>
-    </div>
-    <input id="{{dateRangeId}}" class="form-control cs-date-picker cs-date-range" type="text">
+<!-- <div>
+  <div class="input-group-prepend">
+    <span class="input-group-text bg-secondary">
+      <i class="fe-calendar"></i>
+    </span>
   </div>
-</div>
+  <input id="{{dateRangeId}}" class="form-control cs-date-picker cs-date-range" type="text">
+</div> -->
+<input class="form-control rounded date-picker date-range flatpickr-input" type="hidden" placeholder="Choose date">
+<input id="{{datePickerId}}" class="form-control rounded date-picker date-range form-control input" placeholder="Choose date" tabindex="0" type="text" readonly="readonly">
+<i class="ai-calendar align-middle position-absolute top-50 end-0 translate-middle-y me-3"></i>

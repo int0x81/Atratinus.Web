@@ -9,14 +9,34 @@ export class InvestmentActivityService {
   
   readonly mockedInvestors = [
     {
-      name: 'Melvin Capital',
-      long: -73.99013151345478,
-      lat: 40.732
+      name: 'GAMCO INVESTORS, INC. ET AL',
+      long: -73.69814512544758,
+      lat: 40.97426910728413, 
+    },
+    {
+      name: 'Saba Capital Management, L.P.',
+      long: -73.97559738877787,
+      lat: 40.75150682288953, 
+    },
+    {
+      name: 'Coliseum Capital Management, LLC',
+      long: -73.54181647330894,
+      lat: 41.045321804074554, 
     },
     {
       name: 'Qatar Ventures Limited',
       long: 51.41814117946225,
       lat: 25.194980291662706
+    },
+    {
+      name: 'ICAHN CARL C',
+      long: -118.17948732863553,
+      lat: 33.95655546326215, 
+    },
+    {
+      name: 'Spectrum Equity Investors V L P',
+      long: -0.1375419287189178,
+      lat: 51.48295361826403, 
     },
   ]
 
@@ -95,6 +115,21 @@ export class InvestmentActivityService {
   endDate: Date;
 
   constructor() { }
+
+  acceptNewDate(start: boolean, date: Date): void {
+
+    if(start) {
+      this.startDate = date
+    }
+    else {
+      this.endDate = date
+    }
+    
+    if(this.startDate && this.endDate) {
+      const investments = this.getInvestmentActivities();
+      this.investmentActivitiesSubject.next(investments);
+    }
+  }
 
   acceptNewDateRange(dateRange: Date[]): void {
 

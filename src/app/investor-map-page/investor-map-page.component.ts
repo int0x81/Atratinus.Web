@@ -27,14 +27,7 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
 
   constructor(private modalService: NgbModal, private investmentActivityService: InvestmentActivityService) { }
 
-  ngOnInit() { }
-  ngAfterViewInit(): void {
-
-    this.loadedCampaigns = this.investmentActivityService.getInvestmentActivities();
-    const campaignArray = Array.from(this.loadedCampaigns, ([, value]) => value);
-
-    this.renderGlobe(campaignArray);
-
+  ngOnInit() {
     this.investmentActivitiesSubscription =
     this.investmentActivityService.investmentActivitiesSubject.subscribe((newCampaigns) => {
       this.loadedCampaigns = newCampaigns;
@@ -45,6 +38,24 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
     window.addEventListener('resize', () => {
       this.adjustCanvas();
     });
+   }
+  ngAfterViewInit(): void {
+
+    // this.loadedCampaigns = this.investmentActivityService.getInvestmentActivities();
+    // const campaignArray = Array.from(this.loadedCampaigns, ([, value]) => value);
+
+    // this.renderGlobe(campaignArray);
+
+    // this.investmentActivitiesSubscription =
+    // this.investmentActivityService.investmentActivitiesSubject.subscribe((newCampaigns) => {
+    //   this.loadedCampaigns = newCampaigns;
+    //   const asArray = Array.from(this.loadedCampaigns, ([, value]) => value);
+    //   this.renderGlobe(asArray);
+    // });
+
+    // window.addEventListener('resize', () => {
+    //   this.adjustCanvas();
+    // });
   }
 
   renderGlobe(data: InvestmentCampaign[]) {

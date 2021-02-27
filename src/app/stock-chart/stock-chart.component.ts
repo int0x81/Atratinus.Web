@@ -39,13 +39,10 @@ export class StockChartComponent implements OnInit {
 
     const dataSeries: LineData[][] = this.splitStockData();
 
-    //preArea
     this.addPreArea(dataSeries[0]);
 
-    //campaignArea
     this.addCampaignArea(dataSeries[1]);
     
-    //postArea
     this.addPostArea(dataSeries[2]);
 
     this.chart.timeScale().setVisibleRange({
