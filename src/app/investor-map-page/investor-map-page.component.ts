@@ -102,6 +102,9 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
 
   adjustCanvas() {
 
+    if(!this.globeContainer)
+      return;
+
     if (document.contains(this.renderer.domElement)) {
       this.globeContainer.removeChild(this.renderer.domElement);
     }

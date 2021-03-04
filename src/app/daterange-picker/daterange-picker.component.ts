@@ -11,7 +11,7 @@ import { InvestmentActivityService } from '../investment-activity.service';
 export class DaterangePickerComponent implements AfterViewInit {
 
   @Input() dateRangeId: string;
-    
+
   constructor(private investmentActivityService: InvestmentActivityService) { }
 
   ngAfterViewInit(): void {
@@ -19,15 +19,14 @@ export class DaterangePickerComponent implements AfterViewInit {
     const htmlElement = document.getElementById(this.dateRangeId) as HTMLInputElement;
 
     flatpickr(htmlElement, {
-      altInput: true,
-      altFormat: "F j, Y",
+      mode: 'range',
       dateFormat: "Y-m-d",
       minDate: new Date(1998, 1, 17), // 1 == february; new SEC reform in place
       maxDate: Date.now(),
-      defaultDate: new Date(2020, 10, 17),
-      plugins: [
-        rangePlugin()
-      ],
+      defaultDate: [new Date(2020, 2, 10), new Date(2021, 1, 10)],
+      // plugins: [
+      //   rangePlugin()
+      // ],
       onReady: (dates) => this.investmentActivityService.acceptNewDateRange(dates),
       onValueUpdate: (dates) => this.investmentActivityService.acceptNewDateRange(dates)
     });
