@@ -4,7 +4,7 @@ import { LineData } from 'lightweight-charts';
 @Injectable({
   providedIn: 'root'
 })
-export class StockDataService {
+export class StockDataMockService {
 
   constructor() { }
 

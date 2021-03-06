@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LineData } from 'lightweight-charts';
 
 import { InvestmentCampaign } from '../models/investmentCampaign';
-import { StockDataService } from '../stock-data.service';
+import { StockDataMockService } from '../services/stock-data.service.mock';
 
 @Component({
   selector: 'app-campaign-detail-modal',
@@ -17,7 +17,7 @@ export class CampaignDetailModalComponent {
   stockData: LineData[];
   campaignStockPriceGain: number;
 
-  constructor(private stockDataService: StockDataService, public activeModal: NgbActiveModal) { }
+  constructor(private stockDataService: StockDataMockService, public activeModal: NgbActiveModal) { }
 
   setInvestmentCampaign(campaign: InvestmentCampaign) {
 

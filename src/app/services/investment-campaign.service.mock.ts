@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { InvestmentCampaign } from './models/investmentCampaign';
+import { InvestmentCampaign } from '../models/investmentCampaign';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InvestmentActivityService {
+export class InvestmentCampaignMockService {
   
   readonly mockedInvestors = [
     {

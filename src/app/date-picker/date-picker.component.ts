@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
 import flatpickr from 'flatpickr';
-import rangePlugin from 'flatpickr/dist/plugins/rangePlugin';
-import { InvestmentActivityService } from '../investment-activity.service';
+import { InvestmentCampaignMockService } from '../services/investment-campaign.service.mock';
 
 @Component({
   selector: 'app-date-picker',
@@ -13,7 +12,7 @@ export class DatePickerComponent implements AfterViewInit {
   @Input() datePickerId: string;
 
   @Input() start: boolean;
-  constructor(private investmentActivityService: InvestmentActivityService) { }
+  constructor(private investmentCampaignService: InvestmentCampaignMockService) { }
   ngAfterViewInit(): void {
 
     const htmlElement = document.getElementById(this.datePickerId) as HTMLInputElement;
@@ -26,10 +25,10 @@ export class DatePickerComponent implements AfterViewInit {
       maxDate: Date.now(),
       defaultDate: new Date(2020, 10, 17),
       onReady: (dates) => {
-        this.investmentActivityService.acceptNewDate(this.start, dates[0])
+        this.investmentCampaignService.acceptNewDate(this.start, dates[0])
       },
       onValueUpdate: (dates) => {
-        this.investmentActivityService.acceptNewDate(this.start, dates[0])
+        this.investmentCampaignService.acceptNewDate(this.start, dates[0])
       }
     });
   }

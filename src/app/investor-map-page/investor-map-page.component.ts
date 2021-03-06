@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import * as THREE from 'three';
 import ThreeGlobe from 'three-globe';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CampaignDetailModalComponent } from '../campaign-detail-modal/campaign-detail-modal.component';
-import { InvestmentActivityService } from '../investment-activity.service';
+import { InvestmentCampaignMockService } from '../services/investment-campaign.service.mock';
 import { InvestmentCampaign } from '../models/investmentCampaign';
 
 @Component({
@@ -13,7 +13,7 @@ import { InvestmentCampaign } from '../models/investmentCampaign';
   templateUrl: './investor-map-page.component.html',
   styleUrls: ['./investor-map-page.component.sass']
 })
-export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InvestorMapPageComponent implements OnInit, OnDestroy {
 
   globe: ThreeGlobe;
   globeContainer: HTMLElement;
@@ -25,11 +25,11 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
 
   investmentActivitiesSubscription: Subscription;
 
-  constructor(private modalService: NgbModal, private investmentActivityService: InvestmentActivityService) { }
+  constructor(private modalService: NgbModal, private investmentCampaignService: InvestmentCampaignMockService) { }
 
   ngOnInit() {
     this.investmentActivitiesSubscription =
-    this.investmentActivityService.investmentActivitiesSubject.subscribe((newCampaigns) => {
+    this.investmentCampaignService.investmentActivitiesSubject.subscribe((newCampaigns) => {
       this.loadedCampaigns = newCampaigns;
       const asArray = Array.from(this.loadedCampaigns, ([, value]) => value);
       this.renderGlobe(asArray);
@@ -39,24 +39,6 @@ export class InvestorMapPageComponent implements OnInit, AfterViewInit, OnDestro
       this.adjustCanvas();
     });
    }
-  ngAfterViewInit(): void {
-
-    // this.loadedCampaigns = this.investmentActivityService.getInvestmentActivities();
-    // const campaignArray = Array.from(this.loadedCampaigns, ([, value]) => value);
-
-    // this.renderGlobe(campaignArray);
-
-    // this.investmentActivitiesSubscription =
-    // this.investmentActivityService.investmentActivitiesSubject.subscribe((newCampaigns) => {
-    //   this.loadedCampaigns = newCampaigns;
-    //   const asArray = Array.from(this.loadedCampaigns, ([, value]) => value);
-    //   this.renderGlobe(asArray);
-    // });
-
-    // window.addEventListener('resize', () => {
-    //   this.adjustCanvas();
-    // });
-  }
 
   renderGlobe(data: InvestmentCampaign[]) {
     this.globeContainer = document.getElementById('globeContainer');
