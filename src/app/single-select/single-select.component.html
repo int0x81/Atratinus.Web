@@ -1,0 +1,11 @@
+<div>
+  <input id="{{id}}" class="form-control" list="datalist-options" placeholder="{{placeholder}}">
+  <datalist id="datalist-options">
+    <!-- <option value="San Francisco">
+    <option value="New York">
+    <option value="Seattle">
+    <option value="Los Angeles">
+    <option value="Chicago"> -->
+    <option *ngFor="let item of elements; index as i;">
+  </datalist>
+</div>

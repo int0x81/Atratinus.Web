@@ -15,6 +15,7 @@ import { CampaignModalInfoComponent } from './campaign-modal-info/campaign-modal
 import { StockChartComponent } from './stock-chart/stock-chart.component';
 import { FilterOptionComponent } from './filter-option/filter-option.component';
 import { DaterangePickerComponent } from './daterange-picker/daterange-picker.component';
+import { SingleSelectComponent } from './single-select/single-select.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DaterangePickerComponent } from './daterange-picker/daterange-picker.co
     CampaignModalInfoComponent,
     StockChartComponent,
     FilterOptionComponent,
-    DaterangePickerComponent
+    DaterangePickerComponent,
+    SingleSelectComponent,
   ],
   imports: [
     BrowserModule,
